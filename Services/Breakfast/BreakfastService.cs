@@ -1,12 +1,19 @@
 ﻿using BuberBreakfast.Contracts.Breakfast;
-
-namespace BuberBreakfast.Services.Breakfast
+using BuberBreakfast.Models;
+using BuberBreakfast.Database;
+namespace BuberBreakfast.Services.breakfast
 {
     public class BreakfastService : IBreakfastService
     {
-        public void CreateBreakfast(Models.Breakfast breakfast)
+        BreakfastDatabase _database;
+
+        BreakfastService(string ConnectionString)
         {
-            throw new NotImplementedException();
+            _database = new BreakfastDatabase(ConnectionString);
+        }
+        public void CreateBreakfast(Breakfast breakfast)
+        {
+            _database.InstertBreakfast(new DbBreakfast(breakfast));
         }
 
         public BreakfastRespons DeleteBreakfast(Guid id)

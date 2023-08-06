@@ -1,7 +1,7 @@
 ﻿using BuberBreakfast.Contracts.Breakfast;
 using Microsoft.AspNetCore.Mvc;
 using BuberBreakfast.Models;
-using BuberBreakfast.Services.Breakfast;
+using BuberBreakfast.Services.breakfast;
 
 namespace BuberBreakfast.Controllers
 {
@@ -20,7 +20,6 @@ namespace BuberBreakfast.Controllers
         public IActionResult CreateBreakfast(CreateBreakfastRequest request)
         {
             var Breakfast = new Breakfast(
-                Guid.NewGuid(),
                 request.Name,
                 request.Description,
                 request.StartDatetime,
