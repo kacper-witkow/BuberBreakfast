@@ -47,9 +47,12 @@ namespace BuberBreakfast.Controllers
                 respons);
         }
         [HttpGet("{id:guid}")]
-        public IActionResult GetBreakfast(Guid id)
+        public IActionResult GetBreakfast(int id)
         {
-            return Ok(id);
+            _breakfastService.GetBreakfast(id);
+
+
+            return Ok();
         }
         [HttpPut("{id:guid}")]
         public IActionResult UpsertBreakfast(Guid iid,UpsertBreakfastRequest request)

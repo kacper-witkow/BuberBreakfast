@@ -6,6 +6,6 @@ namespace BuberBreakfast.Database
     {
         void InstertBreakfast(DbBreakfast breakfast);
         void DeleteBreakfast(int Id);
-        void GetBreakfast(int Id);
+        Breakfast GetBreakfast(int Id);
     }
 }

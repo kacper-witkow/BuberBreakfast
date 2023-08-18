@@ -40,9 +40,35 @@ namespace BuberBreakfast.Database
 
         }
 
-        public void GetBreakfast(int Id)
+        public Breakfast GetBreakfast(int Id)
         {
-            throw new NotImplementedException();
+            var command = _connection.CreateCommand();
+            command.CommandText =
+            @" Select * from breakfast
+                WHERE Id=$id
+            ";
+            command.Parameters.AddWithValue("$id", Id);
+
+            var respond = new Breakfast();
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+
+                        respond.Id = reader.GetInt32(0);
+                        respond.Name = reader.GetString(1);
+                        respond.Description = reader.GetString(2);
+                    DateTime tmp;
+                    if (DateTime.TryParse(reader.GetString(3),out tmp))
+                        respond.StartDateTime = tmp;
+                    if (DateTime.TryParse(reader.GetString(3), out tmp))
+                        respond.EndDateTime = tmp;
+                    if (DateTime.TryParse(reader.GetString(3), out tmp))
+                        respond.LastModifiedDateTime = tmp;
+
+                }
+            }
+            return respond;
         }
 
         public void InstertBreakfast(DbBreakfast breakfast)

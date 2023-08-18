@@ -16,17 +16,18 @@ namespace BuberBreakfast.Services.breakfast
             _database.InstertBreakfast(new DbBreakfast(breakfast));
         }
 
-        public BreakfastRespons DeleteBreakfast(Guid id)
+        public BreakfastRespons DeleteBreakfast(int id)
         {
             throw new NotImplementedException();
         }
 
-        public BreakfastRespons GetBreakfast(Guid Id)
+        public BreakfastRespons GetBreakfast(int Id)
         {
-            throw new NotImplementedException();
+            var breakfast=_database.GetBreakfast(Id);
+            return new BreakfastRespons(breakfast.Id, breakfast.Name, breakfast.Description, breakfast.StartDateTime, breakfast.EndDateTime, breakfast.LastModifiedDateTime, breakfast.Savory, breakfast.Sweet);
         }
 
-        public BreakfastRespons UpdateBreakfast(Guid id, UpsertBreakfastRequest request)
+        public BreakfastRespons UpdateBreakfast(int id, UpsertBreakfastRequest request)
         {
             throw new NotImplementedException();
         }
