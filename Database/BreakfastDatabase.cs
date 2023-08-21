@@ -11,7 +11,7 @@ namespace BuberBreakfast.Database
         SqliteConnection _connection;
         public BreakfastDatabase(string Connectionstring)
         {
-            _connection = new SqliteConnection("Data Soruce=" + Connectionstring);
+            _connection = new SqliteConnection("Data Source=" + Connectionstring);
 
         }
 
@@ -50,6 +50,9 @@ namespace BuberBreakfast.Database
             command.Parameters.AddWithValue("$id", Id);
 
             var respond = new Breakfast();
+
+            _connection.Open();
+
             using (var reader = command.ExecuteReader())
             {
                 while (reader.Read())
@@ -59,15 +62,21 @@ namespace BuberBreakfast.Database
                         respond.Name = reader.GetString(1);
                         respond.Description = reader.GetString(2);
                     DateTime tmp;
+                    if(!reader.IsDBNull(3))
                     if (DateTime.TryParse(reader.GetString(3),out tmp))
                         respond.StartDateTime = tmp;
-                    if (DateTime.TryParse(reader.GetString(3), out tmp))
+                    if (!reader.IsDBNull(4))
+                        if (DateTime.TryParse(reader.GetString(4), out tmp))
                         respond.EndDateTime = tmp;
-                    if (DateTime.TryParse(reader.GetString(3), out tmp))
+                    if (!reader.IsDBNull(5))
+                        if (DateTime.TryParse(reader.GetString(5), out tmp))
                         respond.LastModifiedDateTime = tmp;
 
                 }
             }
+
+            _connection.Close();
+
             return respond;
         }
 

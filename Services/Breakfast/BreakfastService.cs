@@ -7,7 +7,7 @@ namespace BuberBreakfast.Services.breakfast
     {
         BreakfastDatabase _database;
 
-        BreakfastService(string ConnectionString)
+        public BreakfastService(string ConnectionString)
         {
             _database = new BreakfastDatabase(ConnectionString);
         }
@@ -16,18 +16,18 @@ namespace BuberBreakfast.Services.breakfast
             _database.InstertBreakfast(new DbBreakfast(breakfast));
         }
 
-        public BreakfastRespons DeleteBreakfast(int id)
+        public Breakfast DeleteBreakfast(int id)
         {
             throw new NotImplementedException();
         }
 
-        public BreakfastRespons GetBreakfast(int Id)
+        public Breakfast GetBreakfast(int Id)
         {
             var breakfast=_database.GetBreakfast(Id);
-            return new BreakfastRespons(breakfast.Id, breakfast.Name, breakfast.Description, breakfast.StartDateTime, breakfast.EndDateTime, breakfast.LastModifiedDateTime, breakfast.Savory, breakfast.Sweet);
+            return new Breakfast(breakfast.Id, breakfast.Name, breakfast.Description, breakfast.StartDateTime, breakfast.EndDateTime, breakfast.LastModifiedDateTime, breakfast.Savory, breakfast.Sweet);
         }
 
-        public BreakfastRespons UpdateBreakfast(int id, UpsertBreakfastRequest request)
+        public Breakfast UpdateBreakfast(int id, UpsertBreakfastRequest request)
         {
             throw new NotImplementedException();
         }

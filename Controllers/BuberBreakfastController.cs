@@ -20,6 +20,7 @@ namespace BuberBreakfast.Controllers
         public IActionResult CreateBreakfast(CreateBreakfastRequest request)
         {
             var Breakfast = new Breakfast(
+                1,
                 request.Name,
                 request.Description,
                 request.StartDatetime,
@@ -46,13 +47,13 @@ namespace BuberBreakfast.Controllers
                 routeValues: new {id = Breakfast.Id},
                 respons);
         }
-        [HttpGet("{id:guid}")]
+        [HttpGet("{id:int}")]
         public IActionResult GetBreakfast(int id)
         {
-            _breakfastService.GetBreakfast(id);
+            Breakfast breakfast= _breakfastService.GetBreakfast(id);
 
 
-            return Ok();
+            return Ok(breakfast);
         }
         [HttpPut("{id:guid}")]
         public IActionResult UpsertBreakfast(Guid iid,UpsertBreakfastRequest request)

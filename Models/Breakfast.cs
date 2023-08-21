@@ -11,8 +11,9 @@
         public List<string> Savory { get; set; }
         public List<string> Sweet { get; set; }
 
-        public Breakfast( string _Name, string _Description, DateTime _StartDateTime, DateTime _EndDateTime, DateTime _LastModifiedDatetime, List<string> _Savory,List<string> _Sweet)
+        public Breakfast(int _Id, string _Name, string _Description, DateTime _StartDateTime, DateTime _EndDateTime, DateTime _LastModifiedDatetime, List<string> _Savory,List<string> _Sweet)
         {
+            Id = _Id;
             Name = _Name;
             Description = _Description;
             StartDateTime = _StartDateTime;
