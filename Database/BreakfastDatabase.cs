@@ -64,13 +64,13 @@ namespace BuberBreakfast.Database
                     DateTime tmp;
                     if(!reader.IsDBNull(3))
                     if (DateTime.TryParse(reader.GetString(3),out tmp))
-                        respond.StartDateTime = tmp;
+                            respond.StartDateTime = tmp;
                     if (!reader.IsDBNull(4))
                         if (DateTime.TryParse(reader.GetString(4), out tmp))
-                        respond.EndDateTime = tmp;
+                            respond.EndDateTime = tmp;
                     if (!reader.IsDBNull(5))
                         if (DateTime.TryParse(reader.GetString(5), out tmp))
-                        respond.LastModifiedDateTime = tmp;
+                            respond.LastModifiedDateTime = tmp;
 
                 }
             }
@@ -105,6 +105,20 @@ namespace BuberBreakfast.Database
 
 
             UpdateDatabase(command);
+        }
+
+        internal void UpsertDatabase(Breakfast breakfast)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText =
+            @" Select * from breakfast
+                WHERE Id=$id
+            ";
+            using (var reader = command.ExecuteReader())
+            {
+            }
+            command.Parameters.AddWithValue("$id", breakfast.Id);
+
         }
     }
 }

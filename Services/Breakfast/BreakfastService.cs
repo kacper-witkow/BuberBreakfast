@@ -1,6 +1,9 @@
 ﻿using BuberBreakfast.Contracts.Breakfast;
 using BuberBreakfast.Models;
 using BuberBreakfast.Database;
+using ErrorOr;
+using BuberBreakfast.Services.error;
+
 namespace BuberBreakfast.Services.breakfast
 {
     public class BreakfastService : IBreakfastService
@@ -16,20 +19,21 @@ namespace BuberBreakfast.Services.breakfast
             _database.InstertBreakfast(new DbBreakfast(breakfast));
         }
 
-        public Breakfast DeleteBreakfast(int id)
+        public void DeleteBreakfast(int id)
         {
-            throw new NotImplementedException();
+            _database.DeleteBreakfast(id);
         }
-
-        public Breakfast GetBreakfast(int Id)
+        public ErrorOr<Breakfast> GetBreakfast(int Id)
         {
             var breakfast=_database.GetBreakfast(Id);
-            return new Breakfast(breakfast.Id, breakfast.Name, breakfast.Description, breakfast.StartDateTime, breakfast.EndDateTime, breakfast.LastModifiedDateTime, breakfast.Savory, breakfast.Sweet);
+            if (breakfast.IsNull())
+                return Errors.Breakfast.NotFound;
+            return breakfast;
         }
 
-        public Breakfast UpdateBreakfast(int id, UpsertBreakfastRequest request)
+        public void UpsertBreakfast(Breakfast request)
         {
-            throw new NotImplementedException();
+            _database.UpsertDatabase(request);
         }
     }
 }

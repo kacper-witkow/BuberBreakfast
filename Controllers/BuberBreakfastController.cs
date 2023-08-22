@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using BuberBreakfast.Models;
 using BuberBreakfast.Services.breakfast;
+using ErrorOr;
 
 namespace BuberBreakfast.Controllers
 {
@@ -50,19 +51,30 @@ namespace BuberBreakfast.Controllers
         [HttpGet("{id:int}")]
         public IActionResult GetBreakfast(int id)
         {
-            Breakfast breakfast= _breakfastService.GetBreakfast(id);
-
+            ErrorOr<Breakfast> breakfast= _breakfastService.GetBreakfast(id);
 
             return Ok(breakfast);
         }
-        [HttpPut("{id:guid}")]
-        public IActionResult UpsertBreakfast(Guid iid,UpsertBreakfastRequest request)
+        [HttpPut("{id:int}")]
+        public IActionResult UpsertBreakfast(int id,UpsertBreakfastRequest request)
         {
+            var Breakfast = new Breakfast(
+                id,
+                request.Name,
+                request.Description,
+                request.StartDatetime,
+                request.EndDateTime,
+                DateTime.UtcNow,
+                request.Savory,
+                request.Sweet
+            );
+            _breakfastService.UpsertBreakfast(Breakfast);
             return Ok(request);
         }
-        [HttpDelete("{id:guid}")]
-        public IActionResult DeleteBreakfast(Guid id)
+        [HttpDelete("{id:int}")]
+        public IActionResult DeleteBreakfast(int id)
         {
+            _breakfastService.DeleteBreakfast(id);
             return Ok(id);
         }
     }

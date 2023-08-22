@@ -2,12 +2,12 @@
 {
     public class Breakfast
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public DateTime StartDateTime { get; set; }
-        public DateTime EndDateTime { get; set; }
-        public DateTime LastModifiedDateTime { get; set; }
+        public DateTime? StartDateTime { get; set; }
+        public DateTime? EndDateTime { get; set; }
+        public DateTime? LastModifiedDateTime { get; set; }
         public List<string> Savory { get; set; }
         public List<string> Sweet { get; set; }
 
@@ -25,6 +25,14 @@
 
         public Breakfast()
         {
+        }
+
+        public bool IsNull()
+        {
+            if (this.Id == null)
+                return true;
+            else
+                return false;
         }
     }
 }

@@ -16,9 +16,9 @@
             Id = breakfast.Id.ToString();
             Name = breakfast.Name;
             Description = breakfast.Description;
-            StartDateTime = breakfast.StartDateTime.ToString("yyyy/MM/dd HH:mm");
-            EndDateTime = breakfast.EndDateTime.ToString("yyyy/MM/dd HH:mm");
-            LastModifiedDateTime = breakfast.LastModifiedDateTime.ToString("yyyy/MM/dd HH:mm");
+            StartDateTime = breakfast.StartDateTime?.ToString("yyyy/MM/dd HH:mm");
+            EndDateTime = breakfast.EndDateTime?.ToString("yyyy/MM/dd HH:mm");
+            LastModifiedDateTime = breakfast.LastModifiedDateTime?.ToString("yyyy/MM/dd HH:mm");
             //Not sure about List casting olny with ToString()!!
             Savory = breakfast.Savory.ToString();
             Sweet = breakfast.Sweet.ToString();
