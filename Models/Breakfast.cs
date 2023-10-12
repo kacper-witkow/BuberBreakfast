@@ -21,7 +21,7 @@ namespace BuberBreakfast.Models
             Description = _Description;
             StartDateTime = _StartDateTime;
             EndDateTime = _EndDateTime;
-            LastModifiedDateTime = _LastModifiedDatetime;
+            LastModifiedDateTime = DateTime.Now;
             Savory = _Savory;
         }
 
@@ -31,14 +31,7 @@ namespace BuberBreakfast.Models
         public Breakfast(string Id)
         {
             this.Id = Id;
-        }
-
-        public bool IsNull()
-        {
-            if (this.Id == null)
-                return true;
-            else
-                return false;
+            LastModifiedDateTime = DateTime.Now;
         }
     }
 }
