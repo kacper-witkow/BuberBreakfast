@@ -29,7 +29,15 @@ namespace BuberBreakfast.Controllers
         [HttpPost("/breakfasts/upsert/{id}")]
         public IActionResult UpsertBreakfast(string id, [FromBody] Breakfast _breakfast)
         {
-
+            var OldBreakfast = _service.GetBreakfast(id);
+            _service.DeleteBreakfast(id);
+            var NewBreakfast = new Breakfast()
+            {
+                Id = id,
+                Name = _breakfast.Name,
+                Description = _breakfast.Description,
+            };
+            _service.CreateBreakfast(NewBreakfast);
             return Ok();
         }
         [HttpDelete("/breakfasts/delete/{id:int}")]
