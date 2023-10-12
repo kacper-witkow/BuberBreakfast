@@ -1,5 +1,4 @@
-using BuberBreakfast.Database;
-using BuberBreakfast.Services.breakfast;
+using BuberBreakfast.Controllers;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -10,14 +9,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().Providers.FirstOrDefault();
-string connectionStrings;
-configuration.TryGet("ConnectionStrings",out connectionStrings);
 builder.Services.AddControllers();
-builder.Services.AddScoped<IBreakfastService, BreakfastService>(_=> new BreakfastService(connectionStrings));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//Database connection
+IConfiguration config = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+builder.Services.AddDbContext<BreakfastDb>(
+    options => options.UseSqlite(config.GetConnectionString("Database")));
 
 
 var app = builder.Build();

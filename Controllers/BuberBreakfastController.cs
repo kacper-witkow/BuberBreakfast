@@ -1,8 +1,5 @@
-﻿using BuberBreakfast.Contracts.Breakfast;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using BuberBreakfast.Models;
-using BuberBreakfast.Services.breakfast;
-using ErrorOr;
 
 namespace BuberBreakfast.Controllers
 {
@@ -10,73 +7,48 @@ namespace BuberBreakfast.Controllers
     [Route("[controller]")]
     public class BuberBreakfastController : Controller
     {
-        private readonly IBreakfastService _breakfastService;
+        private readonly BreakfastDb _context;
 
-        public BuberBreakfastController(IBreakfastService breakfastService)
+        public BuberBreakfastController(BreakfastDb _breakfastDb)
         {
-            this._breakfastService = breakfastService;
+            _context = _breakfastDb;
         }
 
-        [HttpPost()]
-        public IActionResult CreateBreakfast(CreateBreakfastRequest request)
+        [HttpPost("/breakfasts")]
+        public IActionResult CreateBreakfast([FromBody] Breakfast _breakfast)
         {
-            var Breakfast = new Breakfast(
-                1,
-                request.Name,
-                request.Description,
-                request.StartDatetime,
-                request.EndDateTime,
-                DateTime.UtcNow,
-                request.Savory,
-                request.Sweet
-            );
 
-            _breakfastService.CreateBreakfast(Breakfast);
-
-            var respons = new BreakfastRespons(
-                Breakfast.Id,
-                Breakfast.Name,
-                Breakfast.Description,
-                Breakfast.StartDateTime,
-                Breakfast.EndDateTime,
-                Breakfast.LastModifiedDateTime,
-                Breakfast.Savory,
-                Breakfast.Sweet
-            );
-            return CreatedAtAction(
-                actionName: nameof(GetBreakfast),
-                routeValues: new {id = Breakfast.Id},
-                respons);
+            _context.Add(_breakfast);
+            _context.SaveChanges();
+            return Ok();
         }
-        [HttpGet("{id:int}")]
-        public IActionResult GetBreakfast(int id)
+        [HttpGet("/breakfasts/{id}")]
+        public IActionResult GetBreakfast(string id)
         {
-            ErrorOr<Breakfast> breakfast= _breakfastService.GetBreakfast(id);
-
+            var breakfast = _context.Breakfasts.FirstOrDefault(b=>b.Id==id);
+            if(breakfast==null)
+                return NotFound();
             return Ok(breakfast);
         }
-        [HttpPut("{id:int}")]
-        public IActionResult UpsertBreakfast(int id,UpsertBreakfastRequest request)
+        [HttpPost("/breakfasts/upsert/{id}")]
+        public IActionResult UpsertBreakfast(string id, [FromBody] Breakfast _breakfast)
         {
-            var Breakfast = new Breakfast(
-                id,
-                request.Name,
-                request.Description,
-                request.StartDatetime,
-                request.EndDateTime,
-                DateTime.UtcNow,
-                request.Savory,
-                request.Sweet
-            );
-            _breakfastService.UpsertBreakfast(Breakfast);
-            return Ok(request);
+            var breakfast = _context.Breakfasts.FirstOrDefault(b => b.Id == id);
+            breakfast = new Breakfast
+            {
+                Id = id,
+            };
+
+            return Ok();
         }
-        [HttpDelete("{id:int}")]
-        public IActionResult DeleteBreakfast(int id)
+        [HttpDelete("/breakfasts/delete/{id:int}")]
+        public IActionResult DeleteBreakfast(string id)
         {
-            _breakfastService.DeleteBreakfast(id);
-            return Ok(id);
+            _context.Breakfasts.Remove(new Breakfast(id));
+            _context.SaveChanges();
+            return Ok();
         }
+       
     }
 }
 
