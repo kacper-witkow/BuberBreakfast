@@ -5,7 +5,7 @@ using BuberBreakfast.Services;
 namespace BuberBreakfast.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/breakfasts")]
     public class BuberBreakfastController : Controller
     {
         BreakfastService _service;
@@ -13,12 +13,14 @@ namespace BuberBreakfast.Controllers
         {
             _service = service;
         }
-        [HttpPost("/breakfasts")]
-        public IActionResult CreateBreakfast([FromBody] Breakfast _breakfast)
+        [HttpPost()]
+        public IActionResult CreateBreakfast(Breakfast _breakfast)
         {
+            _service.CreateBreakfast(_breakfast);
             return Ok();
         }
-        [HttpGet("/breakfasts/{id}")]
+
+        [HttpGet("{id}")]
         public IActionResult GetBreakfast(string id)
         {
             var breakfast=_service.GetBreakfast(id);
@@ -26,24 +28,27 @@ namespace BuberBreakfast.Controllers
                 return NotFound();
             return Ok(breakfast);
         }
-        [HttpPost("/breakfasts/upsert/{id}")]
-        public IActionResult UpsertBreakfast(string id, [FromBody] Breakfast _breakfast)
+        [HttpPost("upsert/{id}")]
+        public IActionResult UpsertBreakfast(string id, Breakfast _breakfast)
         {
             var OldBreakfast = _service.GetBreakfast(id);
+            if (OldBreakfast == null)
+                return NotFound();
+
             _service.DeleteBreakfast(id);
-            var NewBreakfast = new Breakfast()
-            {
-                Id = id,
-                Name = _breakfast.Name,
-                Description = _breakfast.Description,
-            };
+
+            var NewBreakfast = new Breakfast(id, _breakfast.Name, _breakfast.Description);
             _service.CreateBreakfast(NewBreakfast);
             return Ok();
         }
-        [HttpDelete("/breakfasts/delete/{id:int}")]
+        [HttpDelete("delete/{id:int}")]
         public IActionResult DeleteBreakfast(string id)
         {
-             _service.DeleteBreakfast(id);
+            var OldBreakfast = _service.GetBreakfast(id);
+            if (OldBreakfast == null)
+                return NotFound();
+
+            _service.DeleteBreakfast(id);
             return Ok();
         }
        

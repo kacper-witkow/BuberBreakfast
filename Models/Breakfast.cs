@@ -29,10 +29,16 @@ namespace BuberBreakfast.Models
         public Breakfast()
         {
         }
+        public Breakfast(string Id,string _Name,string? _Description)
+        {
+            this.Id = Id;
+            this.Name = _Name;
+            this.Description = _Description;
+            this.LastModifiedDateTime = DateTime.Now;
+        }
         public Breakfast(string Id)
         {
             this.Id = Id;
-            LastModifiedDateTime = DateTime.Now;
         }
     }
 }
