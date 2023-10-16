@@ -1,2 +1,2 @@
 # BuberBreakfast
-Simple REST API in ASP.NET CORE
+REST API in ASP.NET CORE
