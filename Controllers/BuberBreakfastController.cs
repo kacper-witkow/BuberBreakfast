@@ -16,8 +16,13 @@ namespace BuberBreakfast.Controllers
         [HttpPost()]
         public IActionResult CreateBreakfast(Breakfast _breakfast)
         {
-            _service.CreateBreakfast(_breakfast);
-            return Ok();
+            var breakfast = _service.GetBreakfast(_breakfast.Id);
+            if (breakfast == null)
+            {
+                _service.CreateBreakfast(_breakfast);
+                return Ok();
+            }
+            return this.UpsertBreakfast(_breakfast.Id, _breakfast);
         }
 
         [HttpGet("{id}")]

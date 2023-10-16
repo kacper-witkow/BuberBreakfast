@@ -22,7 +22,7 @@ IConfiguration config = new ConfigurationBuilder()
             .Build();
 
 builder.Services.AddDbContext<BreakfastDb>(
-    options => options.UseSqlite(config.GetConnectionString("Database")));
+    options => options.UseSqlite("Data Source=" + Path.Combine(Environment.CurrentDirectory, "db.db")));
 
 
 var app = builder.Build();
